@@ -11,8 +11,10 @@
 
 # Claude web security skills
 
-Simple, reusable security-review skills for Claude. The bundle contains **41 skills** and
-**306 original prompts**, covering common web application vulnerabilities, API issues, and security misconfigurations. Each skill includes a description, a list of prompts, and guidance for safe and authorized testing.
+Simple, reusable security-review skills for Claude. The bundle contains a broad collection of
+web-focused security skills and curated prompt sets covering common vulnerabilities, API issues,
+misconfigurations, and recon workflows. Each skill includes a description, a list of prompts,
+and guidance for safe and authorized testing.
 
 ## Authorized and educational use only
 
@@ -61,22 +63,35 @@ Restart Claude Code after installing if the skills do not appear immediately.
 
 ## Install or remove with the setup script
 
-From the project root, use the helper script:
+From the project root, make the helper executable once:
+
+```bash
+chmod +x ./setup.sh
+```
+
+Install all skills for Claude Code:
 
 ```bash
 ./setup.sh --install claude
-./setup.sh --remove claude
 ```
 
-For Codex:
+Install all skills for Codex:
 
 ```bash
 ./setup.sh --install codex
+```
+
+Remove the skills installed by this project:
+
+```bash
+./setup.sh --remove claude
 ./setup.sh --remove codex
 ```
 
-The script copies the skill folders into `~/.claude/skills/` or `~/.codex/skills/`. It refuses to
-overwrite an existing skill and removes only the folders it installed.
+The script copies skills into `~/.claude/skills/` or `~/.codex/skills/`. It refuses to overwrite
+existing skills and records its own folders in a managed manifest. Removal deletes only the skills
+listed in that manifest, so other skills are left untouched. Restart Claude Code or Codex after
+installation if the skills are not detected immediately.
 
 ## Use a skill
 
@@ -87,6 +102,60 @@ mention the skill name:
 Use the XSS skill. Review this authorized staging application for reflected,
 stored, and DOM XSS. Use safe canaries and give me reproducible findings.
 ```
+
+## JavaScript and secret discovery tools
+
+When you use the recon and disclosure workflows, the following tools are especially useful:
+
+- `gau` and `waybackurls` for historical URL mining
+- `linkfinder` and `hakrawler` for JavaScript endpoint extraction
+- `httpx` and `curl` for live validation
+- `trufflehog`, `gitleaks`, and `secretfinder` for secret discovery
+- `ffuf` for path and endpoint fuzzing after discovery
+
+Example install on macOS with Homebrew and Go:
+
+```bash
+brew install ffuf
+
+go install -v github.com/tomnomnom/waybackurls@latest
+go install -v github.com/lc/gau/v2/cmd/gau@latest
+go install -v github.com/hakluke/hakrawler@latest
+go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
+go install -v github.com/hahwul/dalfox/v2@latest
+
+python3 -m pip install dirsearch wfuzz
+```
+
+Make sure your Go bin directory is on PATH:
+
+```bash
+export PATH="$(go env GOPATH)/bin:$PATH"
+```
+
+## Wordlists
+
+The [wordlists/](wordlists/) folder contains curated lists for authorized web testing:
+
+- Directory and content discovery
+- API route and action discovery
+- Query/body parameter enumeration
+- Files, backups, and extensions
+- Framework/server paths
+- Proxy and trust-boundary headers
+- Safe test canaries
+
+Start with the small lists, then use the medium RAFT list only when the target and rate limits
+allow it. Example:
+
+```bash
+ffuf -u https://target.example/FUZZ \
+  -w wordlists/content-discovery/raft-small-words.txt \
+  -mc 200,204,301,302,307,401,403
+```
+
+Use only an authorized target, keep concurrency conservative, and review every result manually.
+See [wordlists/SOURCES.md](wordlists/SOURCES.md) for sources and attribution.
 
 More examples:
 
@@ -198,6 +267,10 @@ impact, and remediation.
 - [CMDI (3 prompts)](cmdi/SKILL.md)
 - [DISCLOSURE (10 prompts)](disclosure/SKILL.md)
 - [RECON (8 prompts)](recon/SKILL.md)
+- [JavaScript recon](javascript-recon/SKILL.md)
+- [Archive mining](archive-mining/SKILL.md)
+- [Secret discovery](secret-discovery/SKILL.md)
+- [Tooling guide](tooling/SKILL.md)
 - [LLM (14 prompts)](llm/SKILL.md)
 - [SUPPLY (4 prompts)](supply/SKILL.md)
 - [DOS (6 prompts)](dos/SKILL.md)
@@ -209,7 +282,7 @@ impact, and remediation.
 
 ## license
 
-Project-authored material is released under the [MIT License](../LICENSE). Adapted third-party
+Project-authored material is released under the [MIT License](LICENSE). Adapted third-party
 material remains subject to its original attribution and licensing terms.
 
 ## Contributing
