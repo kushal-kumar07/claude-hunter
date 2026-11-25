@@ -19,7 +19,7 @@ and guidance for safe and authorized testing.
 ## New: the HUNTER orchestrator skill
 
 Don't know which of the 40+ category skills below applies to your target? Use
-[HUNTER](hunter/SKILL.md) instead of picking one by hand.
+[HUNTER](skills/hunter/SKILL.md) instead of picking one by hand.
 
 Give it a URL, source code, or both, and it:
 
@@ -209,27 +209,27 @@ staging target. Start with passive discovery and report each step.
 
 | What you are testing | Start with |
 |---|---|
-| Browser script injection | [XSS](xss/SKILL.md) |
-| Database query injection | [SQLI](sqli/SKILL.md) |
-| Server-side URL fetching | [SSRF](ssrf/SKILL.md) |
-| Cross-user object access | [IDOR](idor/SKILL.md) |
-| Login, sessions, reset, or MFA | [AUTH](auth/SKILL.md) |
-| Cross-site forged actions | [CSRF](csrf/SKILL.md) |
-| File handling | [UPLOAD](upload/SKILL.md) |
-| Template expression injection | [SSTI](ssti/SKILL.md) |
-| Redirect destinations | [REDIRECT](redirect/SKILL.md) |
-| API parsing and authorization | [API](api/SKILL.md) |
-| HTTP proxy desynchronization | [HTTP smuggling](http-smuggling/SKILL.md) |
-| Framing sensitive pages | [Clickjacking](clickjacking/SKILL.md) |
-| Raw HTML without scripts | [HTML injection](html-injection/SKILL.md) |
-| gRPC services | [gRPC](grpc/SKILL.md) |
-| Firewall/parser differences | [WAF bypass](waf-bypass/SKILL.md) |
-| Exposed files, source maps, or schemas | [DISCLOSURE](disclosure/SKILL.md) |
-| Forgotten API versions | [API](api/SKILL.md) |
+| Browser script injection | [XSS](skills/xss/SKILL.md) |
+| Database query injection | [SQLI](skills/sqli/SKILL.md) |
+| Server-side URL fetching | [SSRF](skills/ssrf/SKILL.md) |
+| Cross-user object access | [IDOR](skills/idor/SKILL.md) |
+| Login, sessions, reset, or MFA | [AUTH](skills/auth/SKILL.md) |
+| Cross-site forged actions | [CSRF](skills/csrf/SKILL.md) |
+| File handling | [UPLOAD](skills/upload/SKILL.md) |
+| Template expression injection | [SSTI](skills/ssti/SKILL.md) |
+| Redirect destinations | [REDIRECT](skills/redirect/SKILL.md) |
+| API parsing and authorization | [API](skills/api/SKILL.md) |
+| HTTP proxy desynchronization | [HTTP smuggling](skills/http-smuggling/SKILL.md) |
+| Framing sensitive pages | [Clickjacking](skills/clickjacking/SKILL.md) |
+| Raw HTML without scripts | [HTML injection](skills/html-injection/SKILL.md) |
+| gRPC services | [gRPC](skills/grpc/SKILL.md) |
+| Firewall/parser differences | [WAF bypass](skills/waf-bypass/SKILL.md) |
+| Exposed files, source maps, or schemas | [DISCLOSURE](skills/disclosure/SKILL.md) |
+| Forgotten API versions | [API](skills/api/SKILL.md) |
 
-If you are unsure, start with [HUNTER](hunter/SKILL.md) to map the attack surface and get a
-routed shortlist, or manually with [RECON](recon/SKILL.md), [DISCLOSURE](disclosure/SKILL.md),
-and [API](api/SKILL.md), then move to the specific vulnerability skill.
+If you are unsure, start with [HUNTER](skills/hunter/SKILL.md) to map the attack surface and get a
+routed shortlist, or manually with [RECON](skills/recon/SKILL.md), [DISCLOSURE](skills/disclosure/SKILL.md),
+and [API](skills/api/SKILL.md), then move to the specific vulnerability skill.
 
 ## A simple workflow
 
@@ -260,52 +260,52 @@ impact, and remediation.
 
 ## Included skills
 
-- [HUNTER (attack-surface mapping + skill routing)](hunter/SKILL.md)
-- [XSS (25 prompts)](xss/SKILL.md)
-- [SQLI (15 prompts)](sqli/SKILL.md)
-- [SSRF (15 prompts)](ssrf/SKILL.md)
-- [IDOR (15 prompts)](idor/SKILL.md)
-- [AUTH (17 prompts)](auth/SKILL.md)
-- [CSRF (10 prompts)](csrf/SKILL.md)
-- [UPLOAD (12 prompts)](upload/SKILL.md)
-- [RCE (10 prompts)](rce/SKILL.md)
-- [XXE (6 prompts)](xxe/SKILL.md)
-- [SSTI (8 prompts)](ssti/SKILL.md)
-- [REDIRECT (6 prompts)](redirect/SKILL.md)
-- [RACE (8 prompts)](race/SKILL.md)
-- [LOGIC (12 prompts)](logic/SKILL.md)
-- [API (12 prompts)](api/SKILL.md)
-- [JWT (8 prompts)](jwt/SKILL.md)
-- [CORS (6 prompts)](cors/SKILL.md)
-- [PATH (6 prompts)](path/SKILL.md)
-- [DESERIALIZATION (5 prompts)](deserialization/SKILL.md)
-- [TAKEOVER (5 prompts)](takeover/SKILL.md)
-- [GRAPHQL (6 prompts)](graphql/SKILL.md)
-- [MOBILE (6 prompts)](mobile/SKILL.md)
-- [CLOUD (8 prompts)](cloud/SKILL.md)
-- [CRYPTO (6 prompts)](crypto/SKILL.md)
-- [OAUTH (8 prompts)](oauth/SKILL.md)
-- [HEADERS (6 prompts)](headers/SKILL.md)
-- [CACHE (6 prompts)](cache/SKILL.md)
-- [WEBSOCKET (4 prompts)](websocket/SKILL.md)
-- [PROTO (4 prompts)](proto/SKILL.md)
-- [NOSQL (3 prompts)](nosql/SKILL.md)
-- [LDAP (3 prompts)](ldap/SKILL.md)
-- [CMDI (3 prompts)](cmdi/SKILL.md)
-- [DISCLOSURE (10 prompts)](disclosure/SKILL.md)
-- [RECON (8 prompts)](recon/SKILL.md)
-- [JavaScript recon](javascript-recon/SKILL.md)
-- [Archive mining](archive-mining/SKILL.md)
-- [Secret discovery](secret-discovery/SKILL.md)
-- [Tooling guide](tooling/SKILL.md)
-- [LLM (14 prompts)](llm/SKILL.md)
-- [SUPPLY (4 prompts)](supply/SKILL.md)
-- [DOS (6 prompts)](dos/SKILL.md)
-- [HTTP request smuggling](http-smuggling/SKILL.md)
-- [Clickjacking](clickjacking/SKILL.md)
-- [HTML injection](html-injection/SKILL.md)
-- [gRPC](grpc/SKILL.md)
-- [WAF bypass](waf-bypass/SKILL.md)
+- [HUNTER (attack-surface mapping + skill routing)](skills/hunter/SKILL.md)
+- [XSS (25 prompts)](skills/xss/SKILL.md)
+- [SQLI (15 prompts)](skills/sqli/SKILL.md)
+- [SSRF (15 prompts)](skills/ssrf/SKILL.md)
+- [IDOR (15 prompts)](skills/idor/SKILL.md)
+- [AUTH (17 prompts)](skills/auth/SKILL.md)
+- [CSRF (10 prompts)](skills/csrf/SKILL.md)
+- [UPLOAD (12 prompts)](skills/upload/SKILL.md)
+- [RCE (10 prompts)](skills/rce/SKILL.md)
+- [XXE (6 prompts)](skills/xxe/SKILL.md)
+- [SSTI (8 prompts)](skills/ssti/SKILL.md)
+- [REDIRECT (6 prompts)](skills/redirect/SKILL.md)
+- [RACE (8 prompts)](skills/race/SKILL.md)
+- [LOGIC (12 prompts)](skills/logic/SKILL.md)
+- [API (12 prompts)](skills/api/SKILL.md)
+- [JWT (8 prompts)](skills/jwt/SKILL.md)
+- [CORS (6 prompts)](skills/cors/SKILL.md)
+- [PATH (6 prompts)](skills/path/SKILL.md)
+- [DESERIALIZATION (5 prompts)](skills/deserialization/SKILL.md)
+- [TAKEOVER (5 prompts)](skills/takeover/SKILL.md)
+- [GRAPHQL (6 prompts)](skills/graphql/SKILL.md)
+- [MOBILE (6 prompts)](skills/mobile/SKILL.md)
+- [CLOUD (8 prompts)](skills/cloud/SKILL.md)
+- [CRYPTO (6 prompts)](skills/crypto/SKILL.md)
+- [OAUTH (8 prompts)](skills/oauth/SKILL.md)
+- [HEADERS (6 prompts)](skills/headers/SKILL.md)
+- [CACHE (6 prompts)](skills/cache/SKILL.md)
+- [WEBSOCKET (4 prompts)](skills/websocket/SKILL.md)
+- [PROTO (4 prompts)](skills/proto/SKILL.md)
+- [NOSQL (3 prompts)](skills/nosql/SKILL.md)
+- [LDAP (3 prompts)](skills/ldap/SKILL.md)
+- [CMDI (3 prompts)](skills/cmdi/SKILL.md)
+- [DISCLOSURE (10 prompts)](skills/disclosure/SKILL.md)
+- [RECON (8 prompts)](skills/recon/SKILL.md)
+- [JavaScript recon](skills/javascript-recon/SKILL.md)
+- [Archive mining](skills/archive-mining/SKILL.md)
+- [Secret discovery](skills/secret-discovery/SKILL.md)
+- [Tooling guide](skills/tooling/SKILL.md)
+- [LLM (14 prompts)](skills/llm/SKILL.md)
+- [SUPPLY (4 prompts)](skills/supply/SKILL.md)
+- [DOS (6 prompts)](skills/dos/SKILL.md)
+- [HTTP request smuggling](skills/http-smuggling/SKILL.md)
+- [Clickjacking](skills/clickjacking/SKILL.md)
+- [HTML injection](skills/html-injection/SKILL.md)
+- [gRPC](skills/grpc/SKILL.md)
+- [WAF bypass](skills/waf-bypass/SKILL.md)
 
 ## Example
 
