@@ -6,6 +6,10 @@ This folder contains the security skill packs used by Claude Code and Codex for 
 
 - testing-rules: authorization rules, assessment workflow, and finding format that every category skill links to. It installs alongside them, so keep it installed.
 
+## Orchestrator
+
+- hunter: maps the attack surface of a URL, source code, or both, then proposes and auto-loads the relevant category skills below. Start here if you're unsure which skill(s) a target needs.
+
 ## Core categories
 
 - api
