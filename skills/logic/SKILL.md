@@ -7,37 +7,18 @@ description: Assess business rules, workflow transitions, and invariant enforcem
 
 Assess business rules, workflow transitions, and invariant enforcement for abuse-resistant behavior.
 
-## Operating rules
+## Shared rules
 
-- Work only against systems, applications, accounts, and repositories where explicit authorization and a defined test window exist.
-- Prefer local fixtures, staging environments, synthetic records, and non-destructive canaries. Do not access, alter, exfiltrate, or persist real user data.
-- Establish rate, concurrency, payload-size, and stop limits before testing. Stop immediately if availability, confidentiality, or integrity could be affected.
-- Treat a suspected issue as unconfirmed until the request, response, execution/data-flow evidence, affected principal, and security impact are recorded.
-- Never use weaponized payloads when a harmless marker or controlled callback can demonstrate the same behavior.
-- Redact secrets and personal data in notes. Report remediation guidance and the exact authorization scope alongside findings.
-
-## Assessment workflow
-
-1. Define scope, identities, environment, test limits, and rollback contacts.
-2. Inventory relevant endpoints, inputs, parsers, trust boundaries, and user roles.
-3. Start with passive inspection and benign markers; compare behavior across roles, methods, encodings, and content types.
-4. Use the category prompt catalog below as hypotheses, adapting payloads to safe canaries and the approved environment.
-5. Capture reproducible evidence: timestamp, endpoint, method, sanitized request/response, actor, preconditions, observed result, and impact.
-6. Validate fixes with regression tests, then document residual risk and monitoring recommendations.
-
-## Finding format
-
-- **Title / severity / confidence**
-- **Affected asset and authorization context**
-- **Preconditions and reproduction steps**
-- **Sanitized evidence and source-to-sink or control-flow path**
-- **Security impact and affected users/data**
-- **Root cause**
-- **Recommended remediation and regression test**
+Follow the authorization rules, assessment workflow, and finding format in [testing-rules](../testing-rules/SKILL.md). Load that skill before testing; do not proceed without confirmed authorization and scope.
 
 ## Category-specific focus
 
 Use the prompts below to guide a focused **LOGIC** review. Translate each hypothesis into a safe, authorized test and preserve the evidence needed to reproduce or remediate it.
+
+## Confirmed vs. false positive
+
+- **Confirmed when:** Performing steps out of order, repeating a step, or combining features causes an unintended state change (double-use, balance mismatch, unintended discount), reproduced deterministically.
+- **False positive when:** The anomaly is a UI-only glitch with no backend state effect, or the behavior is a known, intended feature.
 
 ## Prompt catalog
 
@@ -58,6 +39,9 @@ Use the prompts below to guide a focused **LOGIC** review. Translate each hypoth
 - **Difficulty:** MED
 - **Slug:** `coupon-stacking`
 - **Source prompt:** Apply multiple coupons in sequence; test if non-stackable coupons combine. Apply same coupon twice.
+- **Steps:**
+  1. Apply multiple coupons in sequence; test if non-stackable coupons combine.
+  2. Apply same coupon twice.
 
 ### 149. Free trial reset
 
@@ -70,6 +54,9 @@ Use the prompts below to guide a focused **LOGIC** review. Translate each hypoth
 - **Difficulty:** MED
 - **Slug:** `skipping-required-steps`
 - **Source prompt:** In multi-step wizards (checkout, KYC, onboarding), jump directly to the final POST. Test if intermediate validation is enforced server-side.
+- **Steps:**
+  1. In multi-step wizards (checkout, KYC, onboarding), jump directly to the final POST.
+  2. Test if intermediate validation is enforced server-side.
 
 ### 151. Currency manipulation
 
@@ -100,12 +87,18 @@ Use the prompts below to guide a focused **LOGIC** review. Translate each hypoth
 - **Difficulty:** MED
 - **Slug:** `privilege-via-plan-downgrade`
 - **Source prompt:** Buy premium → use feature → downgrade. Test if feature access lingers.
+- **Steps:**
+  1. Buy premium → use feature → downgrade.
+  2. Test if feature access lingers.
 
 ### 156. Trial extension via timezone
 
 - **Difficulty:** EASY
 - **Slug:** `trial-extension-via-timezone`
 - **Source prompt:** Set local timezone to manipulate expiry windows. Test client-side time checks.
+- **Steps:**
+  1. Set local timezone to manipulate expiry windows.
+  2. Test client-side time checks.
 
 ### 157. Workflow state regression
 
@@ -113,20 +106,9 @@ Use the prompts below to guide a focused **LOGIC** review. Translate each hypoth
 - **Slug:** `workflow-state-regression`
 - **Source prompt:** On state-machine objects (order, ticket), POST transitions in invalid sequence (e.g., `delivered → pending`).
 
-## Source attribution
-
-- Source: [https://hackwithclaude.com/prompts](https://hackwithclaude.com/prompts)
-- Retrieved: 2026-08-28
-- Included prompts: 12
-
 ## Additional coverage
 
 - Workflow state-machine violations and step skipping.
 - Price, quantity, currency, coupon, refund, referral, subscription, and entitlement manipulation.
 - Multi-account abuse and race-assisted business logic flaws.
 - Validate invariants using owned test accounts, synthetic orders, and reversible actions.
-
-### Source attribution
-
-- Adapted from `SnailSploit/Claude-Red` `Skills/web/offensive-business-logic/SKILL.md`.
-- Source repository: https://github.com/SnailSploit/Claude-Red

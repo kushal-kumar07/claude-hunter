@@ -45,6 +45,11 @@ Discover JavaScript bundles, source maps, API references, and hidden endpoints e
 - Sensitive routes embedded in source maps or static assets
 - Unauthenticated or weakly-protected flows discovered from JS references
 
+## Confirmed vs. false positive
+
+- **Confirmed when:** An extracted route, key, or endpoint is live and reachable, with a security-relevant difference from documented behavior.
+- **False positive when:** The code path is dead, the route is feature-flagged off and 404s in the target environment, or the source map points to non-sensitive dev tooling.
+
 ## Prompt catalog
 
 ### 1. JS bundle discovery
@@ -76,14 +81,15 @@ Discover JavaScript bundles, source maps, API references, and hidden endpoints e
 - **Difficulty:** MED
 - **Slug:** `auth-flow-enumeration-from-js`
 - **Source prompt:** Search client-side bundles for login, reset, MFA, callback, and token-refresh endpoints. Map how they accept and validate user input.
+- **Steps:**
+  1. Search client-side bundles for login, reset, MFA, callback, and token-refresh endpoints.
+  2. Map how they accept and validate user input.
 
 ### 6. Admin / internal endpoint discovery
 
 - **Difficulty:** MED
 - **Slug:** `admin-internal-endpoint-discovery`
 - **Source prompt:** Identify endpoints from JS references that look admin-only, internal, or meant for privileged users. Review access controls and route exposure.
-
-## Source attribution
-
-- Adapted from general JavaScript recon and archive-mining workflows used in web bug bounty and security research.
-- This skill is intentionally framed for authorized testing only.
+- **Steps:**
+  1. Identify endpoints from JS references that look admin-only, internal, or meant for privileged users.
+  2. Review access controls and route exposure.

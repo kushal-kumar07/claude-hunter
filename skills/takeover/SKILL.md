@@ -7,37 +7,18 @@ description: Assess dangling DNS, cloud, and hosted-service references for subdo
 
 Assess dangling DNS, cloud, and hosted-service references for subdomain or resource takeover risk.
 
-## Operating rules
+## Shared rules
 
-- Work only against systems, applications, accounts, and repositories where explicit authorization and a defined test window exist.
-- Prefer local fixtures, staging environments, synthetic records, and non-destructive canaries. Do not access, alter, exfiltrate, or persist real user data.
-- Establish rate, concurrency, payload-size, and stop limits before testing. Stop immediately if availability, confidentiality, or integrity could be affected.
-- Treat a suspected issue as unconfirmed until the request, response, execution/data-flow evidence, affected principal, and security impact are recorded.
-- Never use weaponized payloads when a harmless marker or controlled callback can demonstrate the same behavior.
-- Redact secrets and personal data in notes. Report remediation guidance and the exact authorization scope alongside findings.
-
-## Assessment workflow
-
-1. Define scope, identities, environment, test limits, and rollback contacts.
-2. Inventory relevant endpoints, inputs, parsers, trust boundaries, and user roles.
-3. Start with passive inspection and benign markers; compare behavior across roles, methods, encodings, and content types.
-4. Use the category prompt catalog below as hypotheses, adapting payloads to safe canaries and the approved environment.
-5. Capture reproducible evidence: timestamp, endpoint, method, sanitized request/response, actor, preconditions, observed result, and impact.
-6. Validate fixes with regression tests, then document residual risk and monitoring recommendations.
-
-## Finding format
-
-- **Title / severity / confidence**
-- **Affected asset and authorization context**
-- **Preconditions and reproduction steps**
-- **Sanitized evidence and source-to-sink or control-flow path**
-- **Security impact and affected users/data**
-- **Root cause**
-- **Recommended remediation and regression test**
+Follow the authorization rules, assessment workflow, and finding format in [testing-rules](../testing-rules/SKILL.md). Load that skill before testing; do not proceed without confirmed authorization and scope.
 
 ## Category-specific focus
 
 Use the prompts below to guide a focused **TAKEOVER** review. Translate each hypothesis into a safe, authorized test and preserve the evidence needed to reproduce or remediate it.
+
+## Confirmed vs. false positive
+
+- **Confirmed when:** The tester can claim an unclaimed resource (a dangling CNAME target, an abandoned package name, an unclaimed account) and serve content as its legitimate owner.
+- **False positive when:** The resource returns a provider's generic not-found page that does not indicate the name is actually claimable, or it is already correctly claimed.
 
 ## Prompt catalog
 
@@ -46,6 +27,10 @@ Use the prompts below to guide a focused **TAKEOVER** review. Translate each hyp
 - **Difficulty:** MED
 - **Slug:** `dangling-dns-cname-enumeration`
 - **Source prompt:** Enumerate all subdomains via crt.sh, Amass. Resolve each. Check CNAMEs pointing to GitHub Pages, S3, Heroku, Azure, Shopify with no claim.
+- **Steps:**
+  1. Enumerate all subdomains via crt.sh, Amass.
+  2. Resolve each.
+  3. Check CNAMEs pointing to GitHub Pages, S3, Heroku, Azure, Shopify with no claim.
 
 ### 194. Dangling S3 bucket
 
@@ -70,9 +55,3 @@ Use the prompts below to guide a focused **TAKEOVER** review. Translate each hyp
 - **Difficulty:** MED
 - **Slug:** `azure-takeover`
 - **Source prompt:** Check `azurewebsites.net`, `cloudapp.net`, `trafficmanager.net` dangling references.
-
-## Source attribution
-
-- Source: [https://hackwithclaude.com/prompts](https://hackwithclaude.com/prompts)
-- Retrieved: 2026-08-28
-- Included prompts: 5

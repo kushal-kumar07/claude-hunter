@@ -44,6 +44,11 @@ Search for exposed credentials, tokens, API keys, and sensitive configuration va
 - Public archives and old pages containing secrets
 - Internal endpoints or auth patterns discovered through client-side code
 
+## Confirmed vs. false positive
+
+- **Confirmed when:** A live, usable credential or key is found in an accessible artifact and safely verified to correspond to a currently valid secret, without using it for further access.
+- **False positive when:** The string matches a secret pattern but is a placeholder, example, test fixture, or already-revoked credential.
+
 ## Prompt catalog
 
 ### 1. JS secret scanning
@@ -69,14 +74,12 @@ Search for exposed credentials, tokens, API keys, and sensitive configuration va
 - **Difficulty:** MED
 - **Slug:** `git-and-ci-leak-review`
 - **Source prompt:** Inspect public or exposed repositories, CI artifacts, and build outputs for credentials, tokens, and deploy secrets. Validate that the leakage is real and still active.
+- **Steps:**
+  1. Inspect public or exposed repositories, CI artifacts, and build outputs for credentials, tokens, and deploy secrets.
+  2. Validate that the leakage is real and still active.
 
 ### 5. Source map and build metadata review
 
 - **Difficulty:** MED
 - **Slug:** `source-map-build-metadata-review`
 - **Source prompt:** Inspect source maps and build metadata for secret-like strings, stale hostnames, internal service references, and credentials left in generated assets.
-
-## Source attribution
-
-- Adapted from public secret-discovery workflows used in web app review and source leak investigations.
-- This skill is intended only for authorized testing and safe disclosure.

@@ -37,8 +37,3 @@ Report a WAF bypass only when a protected, in-scope behavior is demonstrably rea
 alternate representation. Tune canonicalization and validation at the application boundary,
 normalize once before inspection, reject ambiguous requests, and regression-test WAF and origin
 parsers together.
-
-## Source attribution
-
-- Adapted from `SnailSploit/Claude-Red` `Skills/web/offensive-waf-bypass/SKILL.md`.
-- Source repository: https://github.com/SnailSploit/Claude-Red

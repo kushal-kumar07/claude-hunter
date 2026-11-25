@@ -7,37 +7,18 @@ description: Assess unintended exposure of routes, diagnostics, metadata, schema
 
 Assess unintended exposure of routes, diagnostics, metadata, schemas, and operational information.
 
-## Operating rules
+## Shared rules
 
-- Work only against systems, applications, accounts, and repositories where explicit authorization and a defined test window exist.
-- Prefer local fixtures, staging environments, synthetic records, and non-destructive canaries. Do not access, alter, exfiltrate, or persist real user data.
-- Establish rate, concurrency, payload-size, and stop limits before testing. Stop immediately if availability, confidentiality, or integrity could be affected.
-- Treat a suspected issue as unconfirmed until the request, response, execution/data-flow evidence, affected principal, and security impact are recorded.
-- Never use weaponized payloads when a harmless marker or controlled callback can demonstrate the same behavior.
-- Redact secrets and personal data in notes. Report remediation guidance and the exact authorization scope alongside findings.
-
-## Assessment workflow
-
-1. Define scope, identities, environment, test limits, and rollback contacts.
-2. Inventory relevant endpoints, inputs, parsers, trust boundaries, and user roles.
-3. Start with passive inspection and benign markers; compare behavior across roles, methods, encodings, and content types.
-4. Use the category prompt catalog below as hypotheses, adapting payloads to safe canaries and the approved environment.
-5. Capture reproducible evidence: timestamp, endpoint, method, sanitized request/response, actor, preconditions, observed result, and impact.
-6. Validate fixes with regression tests, then document residual risk and monitoring recommendations.
-
-## Finding format
-
-- **Title / severity / confidence**
-- **Affected asset and authorization context**
-- **Preconditions and reproduction steps**
-- **Sanitized evidence and source-to-sink or control-flow path**
-- **Security impact and affected users/data**
-- **Root cause**
-- **Recommended remediation and regression test**
+Follow the authorization rules, assessment workflow, and finding format in [testing-rules](../testing-rules/SKILL.md). Load that skill before testing; do not proceed without confirmed authorization and scope.
 
 ## Category-specific focus
 
 Use the prompts below to guide a focused **DISCLOSURE** review. Translate each hypothesis into a safe, authorized test and preserve the evidence needed to reproduce or remediate it.
+
+## Confirmed vs. false positive
+
+- **Confirmed when:** Sensitive data (credentials, PII, internal source, infrastructure details) is retrievable by an unauthorized party without first exploiting a separate vulnerability.
+- **False positive when:** The data is already public or intended for the requesting role, or reaching it required an unrelated, already-exploited foothold.
 
 ## Prompt catalog
 
@@ -52,6 +33,9 @@ Use the prompts below to guide a focused **DISCLOSURE** review. Translate each h
 - **Difficulty:** EASY
 - **Slug:** `verbose-error-stack-traces`
 - **Source prompt:** Trigger errors with malformed inputs. Report stack traces leaking framework, paths, queries.
+- **Steps:**
+  1. Trigger errors with malformed inputs.
+  2. Report stack traces leaking framework, paths, queries.
 
 ### 263. Debug endpoints
 
@@ -64,12 +48,19 @@ Use the prompts below to guide a focused **DISCLOSURE** review. Translate each h
 - **Difficulty:** MED
 - **Slug:** `git-repository-exposed`
 - **Source prompt:** Hit `/.git/HEAD`, `/.git/config`. If 200, dump entire repo with `git-dumper`.
+- **Steps:**
+  1. Hit `/.git/HEAD`, `/.git/config`.
+  2. If 200, dump entire repo with `git-dumper`.
 
 ### 265. Source map exposure
 
 - **Difficulty:** EASY
 - **Slug:** `source-map-exposure`
 - **Source prompt:** Fetch `*.js.map` from CDN. Reconstruct original TS/JSX. Report leaked keys/logic.
+- **Steps:**
+  1. Fetch `*.js.map` from CDN.
+  2. Reconstruct original TS/JSX.
+  3. Report leaked keys/logic.
 
 ### 266. PII in logs / responses
 
@@ -94,18 +85,18 @@ Use the prompts below to guide a focused **DISCLOSURE** review. Translate each h
 - **Difficulty:** EASY
 - **Slug:** `robots-txt-sitemap-leak`
 - **Source prompt:** Fetch `/robots.txt`, `/sitemap.xml`, `/humans.txt`. Note disallowed paths — often pointers to admin/dev endpoints.
+- **Steps:**
+  1. Fetch `/robots.txt`, `/sitemap.xml`, `/humans.txt`.
+  2. Note disallowed paths — often pointers to admin/dev endpoints.
 
 ### 300. GraphiQL / Apollo Studio exposed
 
 - **Difficulty:** EASY
 - **Slug:** `graphiql-apollo-studio-exposed`
 - **Source prompt:** Probe `/graphiql`, `/playground`, `/altair`. Report if reachable in prod.
-
-## Source attribution
-
-- Source: [https://hackwithclaude.com/prompts](https://hackwithclaude.com/prompts)
-- Retrieved: 2026-08-28
-- Included prompts: 10
+- **Steps:**
+  1. Probe `/graphiql`, `/playground`, `/altair`.
+  2. Report if reachable in prod.
 
 ## Additional web checks: source and build artifacts
 
@@ -118,8 +109,3 @@ all values, and never clone or exfiltrate production history.
 Useful discovery surfaces include `asset-manifest.json`, framework static directories, OpenAPI
 variants, `robots.txt`, `sitemap.xml`, and build/version endpoints. Report only the minimum
 necessary evidence and rotate any exposed credential through the owner.
-
-### Source attribution
-
-- Adapted from `elementalsouls/Claude-BugHunter` `skills/hunt-source-leak/SKILL.md`.
-- Repository content license: CC BY 4.0.

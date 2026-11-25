@@ -25,8 +25,3 @@ to be internal.
 A finding needs an unauthorized successful method call, sensitive data exposure, spoofable
 identity metadata, or a transport weakness with demonstrated confidentiality impact. Record gRPC
 status codes, method path, metadata names (redacted), protocol, and identity context.
-
-## Source attribution
-
-- Adapted from `elementalsouls/Claude-BugHunter` `skills/hunt-grpc/SKILL.md`.
-- Repository content license: CC BY 4.0.

@@ -43,6 +43,11 @@ Use archived content, historical URLs, and public caches to identify old endpoin
 - Stale file or backup routes
 - Shadow services discovered through historical URL patterns
 
+## Confirmed vs. false positive
+
+- **Confirmed when:** A historical URL or endpoint found in an archive is still live and reachable in the current environment, with a security-relevant behavior.
+- **False positive when:** The endpoint 404s, redirects into current scope with no behavioral difference, or belongs to a decommissioned, out-of-scope environment.
+
 ## Prompt catalog
 
 ### 1. Wayback collection
@@ -50,12 +55,18 @@ Use archived content, historical URLs, and public caches to identify old endpoin
 - **Difficulty:** EASY
 - **Slug:** `wayback-collection`
 - **Source prompt:** Pull all historical URLs for the target domain with `waybackurls` and `gau`. Separate live checks from stale but still reachable paths.
+- **Steps:**
+  1. Pull all historical URLs for the target domain with `waybackurls` and `gau`.
+  2. Separate live checks from stale but still reachable paths.
 
 ### 2. Captured API path discovery
 
 - **Difficulty:** EASY
 - **Slug:** `captured-api-path-discovery`
 - **Source prompt:** Review archived paths for `/api`, `/v1`, `/internal`, `/admin`, `/graphql`, and legacy route variants. Flag routes that still respond or redirect.
+- **Steps:**
+  1. Review archived paths for `/api`, `/v1`, `/internal`, `/admin`, `/graphql`, and legacy route variants.
+  2. Flag routes that still respond or redirect.
 
 ### 3. Forgotten admin panels
 
@@ -74,8 +85,3 @@ Use archived content, historical URLs, and public caches to identify old endpoin
 - **Difficulty:** MED
 - **Slug:** `stale-file-and-backup-discovery`
 - **Source prompt:** Mine archive data for `.bak`, `.old`, `.zip`, `.sql`, `.env`, `.yml`, or debug file patterns that may still be accessible.
-
-## Source attribution
-
-- Adapted from public archive-mining and historical recon workflows used in web bug bounty and asset discovery.
-- This skill is intended only for authorized testing.

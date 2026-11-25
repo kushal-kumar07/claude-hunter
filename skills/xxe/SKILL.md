@@ -7,37 +7,18 @@ description: Assess XML parsing for external entity resolution, local file acces
 
 Assess XML parsing for external entity resolution, local file access, and server-side request behavior.
 
-## Operating rules
+## Shared rules
 
-- Work only against systems, applications, accounts, and repositories where explicit authorization and a defined test window exist.
-- Prefer local fixtures, staging environments, synthetic records, and non-destructive canaries. Do not access, alter, exfiltrate, or persist real user data.
-- Establish rate, concurrency, payload-size, and stop limits before testing. Stop immediately if availability, confidentiality, or integrity could be affected.
-- Treat a suspected issue as unconfirmed until the request, response, execution/data-flow evidence, affected principal, and security impact are recorded.
-- Never use weaponized payloads when a harmless marker or controlled callback can demonstrate the same behavior.
-- Redact secrets and personal data in notes. Report remediation guidance and the exact authorization scope alongside findings.
-
-## Assessment workflow
-
-1. Define scope, identities, environment, test limits, and rollback contacts.
-2. Inventory relevant endpoints, inputs, parsers, trust boundaries, and user roles.
-3. Start with passive inspection and benign markers; compare behavior across roles, methods, encodings, and content types.
-4. Use the category prompt catalog below as hypotheses, adapting payloads to safe canaries and the approved environment.
-5. Capture reproducible evidence: timestamp, endpoint, method, sanitized request/response, actor, preconditions, observed result, and impact.
-6. Validate fixes with regression tests, then document residual risk and monitoring recommendations.
-
-## Finding format
-
-- **Title / severity / confidence**
-- **Affected asset and authorization context**
-- **Preconditions and reproduction steps**
-- **Sanitized evidence and source-to-sink or control-flow path**
-- **Security impact and affected users/data**
-- **Root cause**
-- **Recommended remediation and regression test**
+Follow the authorization rules, assessment workflow, and finding format in [testing-rules](../testing-rules/SKILL.md). Load that skill before testing; do not proceed without confirmed authorization and scope.
 
 ## Category-specific focus
 
 Use the prompts below to guide a focused **XXE** review. Translate each hypothesis into a safe, authorized test and preserve the evidence needed to reproduce or remediate it.
+
+## Confirmed vs. false positive
+
+- **Confirmed when:** The XML parser resolves an external or parameter entity, proven by an out-of-band callback or disclosed file content, without requiring access the tester doesn't otherwise have.
+- **False positive when:** The parser errors out before resolution, or entity expansion is disabled and the apparent anomaly is just a generic malformed-XML error.
 
 ## Prompt catalog
 
@@ -58,6 +39,9 @@ Use the prompts below to guide a focused **XXE** review. Translate each hypothes
 - **Difficulty:** MED
 - **Slug:** `xxe-via-svg-docx`
 - **Source prompt:** Embed XXE in uploaded SVG, DOCX, XLSX. Test if processor expands entities.
+- **Steps:**
+  1. Embed XXE in uploaded SVG, DOCX, XLSX.
+  2. Test if processor expands entities.
 
 ### 121. XXE in SOAP endpoints
 
@@ -76,12 +60,9 @@ Use the prompts below to guide a focused **XXE** review. Translate each hypothes
 - **Difficulty:** HARD
 - **Slug:** `xxe-in-pdf-parsers`
 - **Source prompt:** Some PDF generators expand XML metadata. Test XMP injection.
-
-## Source attribution
-
-- Source: [https://hackwithclaude.com/prompts](https://hackwithclaude.com/prompts)
-- Retrieved: 2026-08-28
-- Included prompts: 6
+- **Steps:**
+  1. Some PDF generators expand XML metadata.
+  2. Test XMP injection.
 
 ## Additional coverage
 
@@ -89,8 +70,3 @@ Use the prompts below to guide a focused **XXE** review. Translate each hypothes
 - XInclude injection and parser-specific external-entity behavior.
 - XXE through SVG, DOCX, SOAP, REST, and upload-processing pipelines.
 - Encoding and filter-bypass differentials across parser layers.
-
-### Source attribution
-
-- Adapted from `SnailSploit/Claude-Red` `Skills/web/offensive-xxe/SKILL.md`.
-- Source repository: https://github.com/SnailSploit/Claude-Red

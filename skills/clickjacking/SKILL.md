@@ -28,8 +28,3 @@ Read-only or public marketing pages should generally be informational.
 
 Use an appropriate `frame-ancestors` policy, retain compatible `X-Frame-Options`, enforce
 anti-CSRF protections, and test all sensitive flows in real browsers.
-
-## Source attribution
-
-- Adapted from `elementalsouls/Claude-BugHunter` `skills/hunt-clickjacking/SKILL.md`.
-- Repository content license: CC BY 4.0.

@@ -25,8 +25,3 @@ authorized test environment.
 Document phishing/UI manipulation, injected links/forms, notification or email reach, and any
 content leakage. Encode output by context, sanitize with a maintained allowlist, isolate email
 rendering, and add regression tests for stored and reflected contexts.
-
-## Source attribution
-
-- Adapted from `elementalsouls/Claude-BugHunter` `skills/hunt-html-injection/SKILL.md`.
-- Repository content license: CC BY 4.0.

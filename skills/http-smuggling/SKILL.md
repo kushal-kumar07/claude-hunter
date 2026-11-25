@@ -37,8 +37,3 @@ A parser discrepancy is not by itself a high-impact finding. Confirm a cross-req
 two owned sessions and a harmless marker. Do not harvest cookies, bypass access controls, poison a
 shared cache, or load-test the service. Recommend strict RFC-compliant parsing, consistent proxy
 and origin configuration, HTTP/2 downgrade hardening, and connection isolation.
-
-## Source attribution
-
-- Adapted from `elementalsouls/Claude-BugHunter` `skills/hunt-http-smuggling/SKILL.md`.
-- Repository content license: CC BY 4.0.

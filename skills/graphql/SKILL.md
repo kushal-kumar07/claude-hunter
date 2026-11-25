@@ -7,37 +7,18 @@ description: Assess GraphQL schema exposure, resolver authorization, query abuse
 
 Assess GraphQL schema exposure, resolver authorization, query abuse, and transport behavior.
 
-## Operating rules
+## Shared rules
 
-- Work only against systems, applications, accounts, and repositories where explicit authorization and a defined test window exist.
-- Prefer local fixtures, staging environments, synthetic records, and non-destructive canaries. Do not access, alter, exfiltrate, or persist real user data.
-- Establish rate, concurrency, payload-size, and stop limits before testing. Stop immediately if availability, confidentiality, or integrity could be affected.
-- Treat a suspected issue as unconfirmed until the request, response, execution/data-flow evidence, affected principal, and security impact are recorded.
-- Never use weaponized payloads when a harmless marker or controlled callback can demonstrate the same behavior.
-- Redact secrets and personal data in notes. Report remediation guidance and the exact authorization scope alongside findings.
-
-## Assessment workflow
-
-1. Define scope, identities, environment, test limits, and rollback contacts.
-2. Inventory relevant endpoints, inputs, parsers, trust boundaries, and user roles.
-3. Start with passive inspection and benign markers; compare behavior across roles, methods, encodings, and content types.
-4. Use the category prompt catalog below as hypotheses, adapting payloads to safe canaries and the approved environment.
-5. Capture reproducible evidence: timestamp, endpoint, method, sanitized request/response, actor, preconditions, observed result, and impact.
-6. Validate fixes with regression tests, then document residual risk and monitoring recommendations.
-
-## Finding format
-
-- **Title / severity / confidence**
-- **Affected asset and authorization context**
-- **Preconditions and reproduction steps**
-- **Sanitized evidence and source-to-sink or control-flow path**
-- **Security impact and affected users/data**
-- **Root cause**
-- **Recommended remediation and regression test**
+Follow the authorization rules, assessment workflow, and finding format in [testing-rules](../testing-rules/SKILL.md). Load that skill before testing; do not proceed without confirmed authorization and scope.
 
 ## Category-specific focus
 
 Use the prompts below to guide a focused **GRAPHQL** review. Translate each hypothesis into a safe, authorized test and preserve the evidence needed to reproduce or remediate it.
+
+## Confirmed vs. false positive
+
+- **Confirmed when:** Introspection, batching, or a resolver lets a caller bypass REST-equivalent authorization or exhaust resources beyond documented limits.
+- **False positive when:** Introspection is enabled but exposes nothing beyond the already-public schema, or query depth/complexity limits do block the attempted query.
 
 ## Prompt catalog
 
@@ -46,12 +27,18 @@ Use the prompts below to guide a focused **GRAPHQL** review. Translate each hypo
 - **Difficulty:** EASY
 - **Slug:** `introspection-in-prod`
 - **Source prompt:** POST `{__schema{types{name fields{name}}}}` to `/graphql`. Save schema.
+- **Steps:**
+  1. POST `{__schema{types{name fields{name}}}}` to `/graphql`.
+  2. Save schema.
 
 ### 199. Field-level authz
 
 - **Difficulty:** MED
 - **Slug:** `field-level-authz`
 - **Source prompt:** For every query/mutation, test as low-priv user. Many apps gate root resolvers but not nested fields.
+- **Steps:**
+  1. For every query/mutation, test as low-priv user.
+  2. Many apps gate root resolvers but not nested fields.
 
 ### 200. Alias abuse for rate-limit bypass
 
@@ -76,9 +63,3 @@ Use the prompts below to guide a focused **GRAPHQL** review. Translate each hypo
 - **Difficulty:** MED
 - **Slug:** `batch-query-for-idor`
 - **Source prompt:** Send batch queries each with different IDs, bypassing per-request rate limits or logging.
-
-## Source attribution
-
-- Source: [https://hackwithclaude.com/prompts](https://hackwithclaude.com/prompts)
-- Retrieved: 2026-08-28
-- Included prompts: 6

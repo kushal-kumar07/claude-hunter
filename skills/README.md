@@ -2,6 +2,10 @@
 
 This folder contains the security skill packs used by Claude Code and Codex for authorized web application testing.
 
+## Shared rules
+
+- testing-rules: authorization rules, assessment workflow, and finding format that every category skill links to. It installs alongside them, so keep it installed.
+
 ## Core categories
 
 - api

@@ -7,37 +7,18 @@ description: Assess HTTP security headers, proxy trust, host handling, and heade
 
 Assess HTTP security headers, proxy trust, host handling, and header-driven security controls.
 
-## Operating rules
+## Shared rules
 
-- Work only against systems, applications, accounts, and repositories where explicit authorization and a defined test window exist.
-- Prefer local fixtures, staging environments, synthetic records, and non-destructive canaries. Do not access, alter, exfiltrate, or persist real user data.
-- Establish rate, concurrency, payload-size, and stop limits before testing. Stop immediately if availability, confidentiality, or integrity could be affected.
-- Treat a suspected issue as unconfirmed until the request, response, execution/data-flow evidence, affected principal, and security impact are recorded.
-- Never use weaponized payloads when a harmless marker or controlled callback can demonstrate the same behavior.
-- Redact secrets and personal data in notes. Report remediation guidance and the exact authorization scope alongside findings.
-
-## Assessment workflow
-
-1. Define scope, identities, environment, test limits, and rollback contacts.
-2. Inventory relevant endpoints, inputs, parsers, trust boundaries, and user roles.
-3. Start with passive inspection and benign markers; compare behavior across roles, methods, encodings, and content types.
-4. Use the category prompt catalog below as hypotheses, adapting payloads to safe canaries and the approved environment.
-5. Capture reproducible evidence: timestamp, endpoint, method, sanitized request/response, actor, preconditions, observed result, and impact.
-6. Validate fixes with regression tests, then document residual risk and monitoring recommendations.
-
-## Finding format
-
-- **Title / severity / confidence**
-- **Affected asset and authorization context**
-- **Preconditions and reproduction steps**
-- **Sanitized evidence and source-to-sink or control-flow path**
-- **Security impact and affected users/data**
-- **Root cause**
-- **Recommended remediation and regression test**
+Follow the authorization rules, assessment workflow, and finding format in [testing-rules](../testing-rules/SKILL.md). Load that skill before testing; do not proceed without confirmed authorization and scope.
 
 ## Category-specific focus
 
 Use the prompts below to guide a focused **HEADERS** review. Translate each hypothesis into a safe, authorized test and preserve the evidence needed to reproduce or remediate it.
+
+## Confirmed vs. false positive
+
+- **Confirmed when:** A missing or misconfigured security header has a demonstrable downstream effect (e.g., no CSP combined with a reachable injection sink).
+- **False positive when:** The header is absent but no reachable sink depends on it, or it is set correctly at a layer (CDN/proxy) the direct response just doesn't show.
 
 ## Prompt catalog
 
@@ -52,6 +33,9 @@ Use the prompts below to guide a focused **HEADERS** review. Translate each hypo
 - **Difficulty:** EASY
 - **Slug:** `missing-hsts`
 - **Source prompt:** Confirm `Strict-Transport-Security: max-age>=31536000; includeSubDomains; preload`. Test stripping over HTTP.
+- **Steps:**
+  1. Confirm `Strict-Transport-Security: max-age>=31536000; includeSubDomains; preload`.
+  2. Test stripping over HTTP.
 
 ### 234. Clickjacking via missing XFO/CSP
 
@@ -64,6 +48,9 @@ Use the prompts below to guide a focused **HEADERS** review. Translate each hypo
 - **Difficulty:** MED
 - **Slug:** `missing-x-content-type-options`
 - **Source prompt:** Without `nosniff`, browsers MIME-sniff — uploaded JS may execute. PoC.
+- **Steps:**
+  1. Without `nosniff`, browsers MIME-sniff — uploaded JS may execute.
+  2. PoC.
 
 ### 236. Permissive Referrer-Policy
 
@@ -77,12 +64,6 @@ Use the prompts below to guide a focused **HEADERS** review. Translate each hypo
 - **Slug:** `csp-weakness`
 - **Source prompt:** Report `unsafe-inline`, `unsafe-eval`, overbroad `*`, wildcard CDNs, missing `object-src 'none'`, `base-uri 'self'`.
 
-## Source attribution
-
-- Source: [https://hackwithclaude.com/prompts](https://hackwithclaude.com/prompts)
-- Retrieved: 2026-08-28
-- Included prompts: 6
-
 ## Additional web checks: host and forwarding headers
 
 Review `Host`, `X-Forwarded-Host`, `Forwarded`, and related proxy headers in password-reset links,
@@ -93,8 +74,3 @@ cloud metadata or internal services without explicit scope.
 
 Reject untrusted host values with an allowlist, normalize proxy headers at the edge, and ensure
 application URL generation uses configured canonical origins.
-
-### Source attribution
-
-- Adapted from `elementalsouls/Claude-BugHunter` `skills/hunt-host-header/SKILL.md`.
-- Repository content license: CC BY 4.0.
