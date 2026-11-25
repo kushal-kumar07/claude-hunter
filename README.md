@@ -16,6 +16,32 @@ web-focused security skills and curated prompt sets covering common vulnerabilit
 misconfigurations, and recon workflows. Each skill includes a description, a list of prompts,
 and guidance for safe and authorized testing.
 
+## New: the HUNTER orchestrator skill
+
+Don't know which of the 40+ category skills below applies to your target? Use
+[HUNTER](hunter/SKILL.md) instead of picking one by hand.
+
+Give it a URL, source code, or both, and it:
+
+1. Confirms scope and authorization (via `testing-rules`) before touching a live target.
+2. Maps the attack surface — live recon for a URL, static analysis for source code, or both,
+   correlated against each other.
+3. Summarizes what it found and matches each signal (JWTs, upload forms, GraphQL, raw SQL,
+   outbound requests, etc.) against the right category skill(s) using a built-in routing table.
+4. Proposes a ranked shortlist and confirms with you — it never silently decides what to test.
+5. Loads the confirmed skills and runs them, then merges their findings into one report.
+
+```text
+Use the hunter skill on https://staging.example.com. This is authorized testing against our
+own staging environment. Map the attack surface first and tell me what's worth hunting before
+you test anything.
+```
+
+```text
+Use the hunter skill on this repo (path: ./app). Map the attack surface from the source and
+suggest which category skills apply before running any of them.
+```
+
 ## Authorized and educational use only
 
 These skills are provided only for authorized security testing, education, and learning. Use them
@@ -201,8 +227,9 @@ staging target. Start with passive discovery and report each step.
 | Exposed files, source maps, or schemas | [DISCLOSURE](disclosure/SKILL.md) |
 | Forgotten API versions | [API](api/SKILL.md) |
 
-If you are unsure, start with [RECON](recon/SKILL.md), [DISCLOSURE](disclosure/SKILL.md), and
-[API](api/SKILL.md), then move to the specific vulnerability skill.
+If you are unsure, start with [HUNTER](hunter/SKILL.md) to map the attack surface and get a
+routed shortlist, or manually with [RECON](recon/SKILL.md), [DISCLOSURE](disclosure/SKILL.md),
+and [API](api/SKILL.md), then move to the specific vulnerability skill.
 
 ## A simple workflow
 
@@ -233,6 +260,7 @@ impact, and remediation.
 
 ## Included skills
 
+- [HUNTER (attack-surface mapping + skill routing)](hunter/SKILL.md)
 - [XSS (25 prompts)](xss/SKILL.md)
 - [SQLI (15 prompts)](sqli/SKILL.md)
 - [SSRF (15 prompts)](ssrf/SKILL.md)
@@ -290,5 +318,4 @@ Released under the [MIT License](LICENSE).
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add or improve a skill. See
-[CHANGELOG.md](CHANGELOG.md) for release history.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add or improve a skill.
